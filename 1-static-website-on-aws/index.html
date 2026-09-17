@@ -1,9 +1,709 @@
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Website para Temas Avanzados</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCG Vault | Premium Collection</title>
+    
+    <!-- Fuentes: Syne (Titulares) + Plus Jakarta Sans (UI) + JetBrains Mono (Precios/Badges) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Paleta de Colores Neón Premium */
+            --bg-body: #030712;
+            --bg-surface: rgba(17, 24, 39, 0.7);
+            --bg-card: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-glow: rgba(168, 85, 247, 0.4);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            
+            /* Acentos */
+            --accent-cyan: #38bdf8;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --accent-green: #10b981;
+            
+            /* Tipografías */
+            --font-display: 'Syne', sans-serif;
+            --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            /* Fondo sutil con malla y luz focal */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.12) 0px, transparent 50%);
+        }
+
+        /* HEADER & NAVBAR */
+        header {
+            background-color: rgba(3, 7, 18, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .brand i { 
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cart-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem 1.3rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            transition: var(--transition);
+        }
+
+        .cart-btn:hover {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .cart-count {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        /* HERO & FILTROS */
+        .hero {
+            padding: 4rem 1.5rem 2.5rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.3rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto 2rem;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .search-container {
+            max-width: 520px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.2rem 1rem 3rem;
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-container input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.6rem 1.3rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chip.active, .chip:hover {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        /* GRID PRINCIPAL */
+        main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 5rem;
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 2rem;
+        }
+
+        /* COMPONENTE CARTA ESTILO TCG POCKET */
+        .tcg-card-wrapper {
+            perspective: 1000px;
+            user-select: none;
+        }
+
+        .tcg-card-inner {
+            position: relative;
+            width: 100%;
+            height: 390px;
+            transition: transform 0.15s ease-out;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+        }
+
+        .tcg-card-wrapper.flipped .tcg-card-inner {
+            transform: rotateY(180deg) !important;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        .card-front {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* IMAGEN DE LA CARTA & BRILLO HOLOGRÁFICO */
+        .card-art-box {
+            position: relative;
+            height: 280px;
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .card-art-box::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(
+                115deg,
+                transparent 20%,
+                rgba(255, 255, 255, 0.5) 48%,
+                rgba(236, 72, 153, 0.4) 50%,
+                rgba(56, 189, 248, 0.4) 52%,
+                transparent 80%
+            );
+            background-size: 200% 200%;
+            background-position: var(--foil-x, 50%) var(--foil-y, 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            mix-blend-mode: color-dodge;
+        }
+
+        .tcg-card-wrapper:hover .card-art-box::after {
+            opacity: 1;
+        }
+
+        .rarity-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            color: var(--accent-cyan);
+            font-size: 0.65rem;
+            font-family: var(--font-mono);
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            z-index: 2;
+        }
+
+        /* INFORMACIÓN Y BOTÓN */
+        .card-info {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .card-name {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .game-tag {
+            font-size: 0.68rem;
+            font-family: var(--font-mono);
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .card-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .price-val {
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-action:hover {
+            background: var(--accent-green);
+            color: #000;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+
+        /* REVERSO DE LA CARTA */
+        .card-back {
+            transform: rotateY(180deg);
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-back .card-img {
+            opacity: 0.95;
+        }
+
+        /* NOTIFICACIÓN TOAST */
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, var(--accent-green), #059669);
+            color: #ffffff;
+            padding: 0.9rem 1.6rem;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 300;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: auto;
+            background: rgba(3, 7, 18, 0.9);
+        }
+    </style>
 </head>
-<body bgcolor="#C9FFE0" text="#003B1C">
-  <h1>Temas Avanzados</h1>
-  <p>Hosteado en Amazon S3!</p>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="brand">
+                <i class="fa-solid fa-bolt"></i> TCG VAULT
+            </a>
+            <button class="cart-btn" onclick="showToast('Carrito de compras demo')">
+                <i class="fa-solid fa-bag-shopping"></i> Carrito
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Colección Interactiva 3D</h1>
+        <p>Experimenta el efecto holográfico dinámico al pasar el cursor o interactúa haciendo clic para descubrir el reverso.</p>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Buscar por nombre (Charizard, Mewtwo, Luffy, Lotus)..." onkeyup="filterCards()">
+        </div>
+
+        <div class="filter-bar">
+            <button class="chip active" onclick="filterGame('all', this)">Todas</button>
+            <button class="chip" onclick="filterGame('pokemon', this)">Pokémon TCG</button>
+            <button class="chip" onclick="filterGame('onepiece', this)">One Piece TCG</button>
+            <button class="chip" onclick="filterGame('yugioh', this)">Yu-Gi-Oh!</button>
+            <button class="chip" onclick="filterGame('mtg', this)">Magic: The Gathering</button>
+        </div>
+    </section>
+
+    <!-- GRID -->
+    <main>
+        <div class="grid" id="cardsGrid">
+
+            <!-- Carta 1: Pikachu -->
+            <div class="tcg-card-wrapper" data-game="pokemon" data-name="pikachu ex pokemon rare">
+                <div class="tcg-card-inner" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="card-art-box">
+                            <span class="rarity-badge">IMMERSIVE RARE</span>
+                            <img src="https://images.pokemontcg.io/sv3pt5/173_hires.png" alt="Pikachu" class="card-img" loading="lazy">
+                        </div>
+                        <div class="card-info">
+                            <div>
+                                <span class="game-tag">Pokémon TCG</span>
+                                <h3 class="card-name">Pikachu ex</h3>
+                            </div>
+                            <div class="card-footer-row">
+                                <span class="price-val">$120.00</span>
+                                <button class="btn-action" onclick="addToCart(event)">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <img src="https://images.pokemontcg.io/sv3pt5/back_hires.png" alt="Reverso Pokémon" class="card-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carta 2: Charizard ex -->
+            <div class="tcg-card-wrapper" data-game="pokemon" data-name="charizard ex pokemon fire holo">
+                <div class="tcg-card-inner" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="card-art-box">
+                            <span class="rarity-badge">SPECIAL ART</span>
+                            <img src="https://images.pokemontcg.io/sv3pt5/199_hires.png" alt="Charizard ex" class="card-img" loading="lazy">
+                        </div>
+                        <div class="card-info">
+                            <div>
+                                <span class="game-tag">Pokémon TCG</span>
+                                <h3 class="card-name">Charizard ex</h3>
+                            </div>
+                            <div class="card-footer-row">
+                                <span class="price-val">$210.00</span>
+                                <button class="btn-action" onclick="addToCart(event)">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <img src="https://images.pokemontcg.io/sv3pt5/back_hires.png" alt="Reverso Pokémon" class="card-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carta 3: Mewtwo VSTAR -->
+            <div class="tcg-card-wrapper" data-game="pokemon" data-name="mewtwo vstar pokemon psiquico">
+                <div class="tcg-card-inner" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="card-art-box">
+                            <span class="rarity-badge">SECRET RARE</span>
+                            <img src="https://images.pokemontcg.io/swsh12pt5/GG44_hires.png" alt="Mewtwo VSTAR" class="card-img" loading="lazy">
+                        </div>
+                        <div class="card-info">
+                            <div>
+                                <span class="game-tag">Pokémon TCG</span>
+                                <h3 class="card-name">Mewtwo VSTAR</h3>
+                            </div>
+                            <div class="card-footer-row">
+                                <span class="price-val">$95.00</span>
+                                <button class="btn-action" onclick="addToCart(event)">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <img src="https://images.pokemontcg.io/sv3pt5/back_hires.png" alt="Reverso Pokémon" class="card-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carta 4: Monkey D. Luffy -->
+            <div class="tcg-card-wrapper" data-game="onepiece" data-name="monkey d luffy one piece leader art">
+                <div class="tcg-card-inner" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="card-art-box">
+                            <span class="rarity-badge">ALT ART</span>
+                            <img src="https://world.onepiece-cardgame.com/images/cardlist/card/OP05-119.png" alt="Luffy" class="card-img" loading="lazy">
+                        </div>
+                        <div class="card-info">
+                            <div>
+                                <span class="game-tag">One Piece TCG</span>
+                                <h3 class="card-name">Monkey D. Luffy</h3>
+                            </div>
+                            <div class="card-footer-row">
+                                <span class="price-val">$310.00</span>
+                                <button class="btn-action" onclick="addToCart(event)">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <img src="https://images.ygoprodeck.com/images/cards/back_high.jpg" alt="Reverso Generic" class="card-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carta 5: Yu-Gi-Oh! Blue-Eyes White Dragon -->
+            <div class="tcg-card-wrapper" data-game="yugioh" data-name="blue-eyes white dragon dragon ojiazul yugioh">
+                <div class="tcg-card-inner" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="card-art-box">
+                            <span class="rarity-badge">SECRET RARE</span>
+                            <img src="https://images.ygoprodeck.com/images/cards/89631139.jpg" alt="Blue-Eyes White Dragon" class="card-img" loading="lazy">
+                        </div>
+                        <div class="card-info">
+                            <div>
+                                <span class="game-tag">Yu-Gi-Oh!</span>
+                                <h3 class="card-name">Blue-Eyes Dragon</h3>
+                            </div>
+                            <div class="card-footer-row">
+                                <span class="price-val">$180.00</span>
+                                <button class="btn-action" onclick="addToCart(event)">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <img src="https://images.ygoprodeck.com/images/cards/back_high.jpg" alt="Reverso Yu-Gi-Oh!" class="card-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carta 6: Magic The Gathering Black Lotus -->
+            <div class="tcg-card-wrapper" data-game="mtg" data-name="black lotus magic the gathering mtg mythic">
+                <div class="tcg-card-inner" onclick="flipCard(this)">
+                    <div class="card-front">
+                        <div class="card-art-box">
+                            <span class="rarity-badge">MYTHIC RARE</span>
+                            <img src="https://cards.scryfall.io/large/front/b/d/bd8fa327-dd41-4737-8f19-2cf5eb1f7cdd.jpg" alt="Black Lotus" class="card-img" loading="lazy">
+                        </div>
+                        <div class="card-info">
+                            <div>
+                                <span class="game-tag">Magic: TG</span>
+                                <h3 class="card-name">Black Lotus</h3>
+                            </div>
+                            <div class="card-footer-row">
+                                <span class="price-val">$14,500</span>
+                                <button class="btn-action" onclick="addToCart(event)">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <img src="https://images.ygoprodeck.com/images/cards/back_high.jpg" alt="Reverso MTG" class="card-img">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="toast" id="toast">¡Carta añadida a tu carrito!</div>
+
+    <footer>
+        <p><strong>TCG Vault Platform</strong> &bull; Experiencia Frontend de Alta Fidelidad</p>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        let cartItems = 0;
+
+        // EFECTO 3D & BRILLO HOLOGRÁFICO
+        const cardWrappers = document.querySelectorAll('.tcg-card-wrapper');
+
+        cardWrappers.forEach(wrapper => {
+            const inner = wrapper.querySelector('.tcg-card-inner');
+            const artBox = wrapper.querySelector('.card-art-box');
+
+            wrapper.addEventListener('mousemove', (e) => {
+                if (wrapper.classList.contains('flipped')) return;
+
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const xRot = -1 * ((y - rect.height / 2) / (rect.height / 2)) * 14;
+                const yRot = ((x - rect.width / 2) / (rect.width / 2)) * 14;
+
+                inner.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg) scale(1.02)`;
+
+                if (artBox) {
+                    const foilX = (x / rect.width) * 100;
+                    const foilY = (y / rect.height) * 100;
+                    artBox.style.setProperty('--foil-x', `${foilX}%`);
+                    artBox.style.setProperty('--foil-y', `${foilY}%`);
+                }
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                if (!wrapper.classList.contains('flipped')) {
+                    inner.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                }
+            });
+        });
+
+        // VOLTEAR CARTA
+        function flipCard(element) {
+            const wrapper = element.parentElement;
+            wrapper.classList.toggle('flipped');
+            if (wrapper.classList.contains('flipped')) {
+                element.style.transform = '';
+            }
+        }
+
+        // CARRITO & TOAST
+        function addToCart(event) {
+            event.stopPropagation();
+            cartItems++;
+            document.getElementById('cartCount').innerText = cartItems;
+            showToast('¡Carta añadida a tu carrito!');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        // BÚSQUEDA Y FILTROS
+        function filterCards() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            cardWrappers.forEach(card => {
+                const name = card.getAttribute('data-name');
+                card.style.display = name.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function filterGame(game, element) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+
+            cardWrappers.forEach(card => {
+                const cardGame = card.getAttribute('data-game');
+                card.style.display = (game === 'all' || cardGame === game) ? 'block' : 'none';
+            });
+        }
+    </script>
 </body>
 </html>
